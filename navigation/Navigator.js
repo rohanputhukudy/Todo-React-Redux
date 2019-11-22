@@ -1,34 +1,37 @@
 import React from 'react';
-import TabNavigator from './NavigationBar';
-import { AppLoading } from 'expo'; // requirement for using native-base in expo
-import * as Font from 'expo-font';
+import { Container, Header, Title, Content, Body, Text, Icon } from 'native-base';
+import { TabNavigator, TabBarBottom } from 'react-navigation';
+import AllToDo from '../screens/AllToDo';
+import ActiveToDo from '../screens/ActiveToDo';
+import CompletedToDo from '../screens/CompletedToDo';
 
-export default class Navigation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fontLoading: true, // to load font in expo
-    };
-  }
-
-  async componentWillMount() {
-    await Font.loadAsync({
-      Roboto: require("app/node_modules/native-base/Fonts/Roboto.ttf"),
-      Robot_medium: require("app/node_modules/native-base/Fonts/Roboto_medium.ttf")
-    });
-    this.setState({ fontLoading: false });
-  }
-
-  render() {
-    if (this.state.fontLoading) {
-      return (
-        <AppLoading />
-      );
-    } else {
-      return (
-        <TabNavigator />
-      );
-    }
-  }
-}
-
+export default TabNavigator({
+  All: { screen: AllToDo },
+  Active: { screen: ActiveToDo },
+  Completed: { screen: CompletedToDo },
+},
+{
+  navigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, tintColor }) => {
+      const { routeName } = navigation.state;
+      let iconName;
+      if (routeName === 'All') {
+        iconName = `list`;
+      } else if (routeName === 'Active') {
+        iconName = `unlock`;
+      } else{
+        iconName = `checkmark`;
+      }
+  
+      return <Icon name= { iconName } color = { 'red' } active = { true } />;
+    },
+  }),
+  tabBarOptions: {
+    activeTintColor: 'tomato',
+    inactiveTintColor: 'gray',
+  },
+  tabBarComponent: TabBarBottom,
+  tabBarPosition: 'bottom',
+  animationEnabled: true,
+  swipeEnabled: false,
+});
