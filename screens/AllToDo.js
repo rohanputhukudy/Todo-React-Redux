@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Title, Content, Body } from 'native-base';
+import { Container, Header, Title, Content, Body, Text } from 'native-base';
 
 export default class AllToDo extends React.Component {    
   render() {
